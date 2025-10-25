@@ -1,9 +1,9 @@
 import { HttpHandlerFn, HttpRequest } from '@angular/common/http';
-import { UserAuth } from '../services/user-auth';
 import { inject } from '@angular/core';
+import { UserAuthService } from '../services/user-auth';
 
 export const authInterceptor = (req: HttpRequest<unknown>, next: HttpHandlerFn) => {
-  const _userAuthService = inject(UserAuth);
+  const _userAuthService = inject(UserAuthService);
 
   const HAS_TOKEN = _userAuthService.getUserToken();
 
