@@ -3,12 +3,14 @@ import { Login } from './pages/login/login';
 import { Products } from './pages/products/products';
 import { Layout } from './pages/layout/layout';
 import { NewProduct } from './pages/new-product/new-product';
-import { authGaurds } from './guards/auth-gaurds';
+import { authGaurd } from './guards/auth-gaurd';
+import { loginAuthGuard } from './guards/login-auth-guard';
 
 export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+    canActivate: [loginAuthGuard],
   },
   {
     path: '',
@@ -18,7 +20,7 @@ export const routes: Routes = [
   {
     path: '',
     component: Layout,
-    canActivateChild: [authGaurds],
+    canActivateChild: [authGaurd],
     children: [
       {
         path: 'products',
