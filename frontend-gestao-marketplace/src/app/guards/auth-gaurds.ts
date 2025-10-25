@@ -1,0 +1,27 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { UserAuth } from '../services/user-auth';
+import { UserService } from '../services/user';
+import { firstValueFrom } from 'rxjs';
+
+export const authGaurds: CanActivateFn = async (route, state) => {
+  const _userService = inject(UserService);
+  const _userAuthService = inject(UserAuth);
+  const _router = inject(Router);
+
+  const HAS_TOKEN = _userAuthService.getUserToken();
+  if (!HAS_TOKEN) {
+    return _router.navigate(['/login']);
+  }
+
+  try {
+    await firstValueFrom(_userService.validateUser());
+
+    if (state.url === '/login') {
+      return _router.navigate(['/products']);
+    }
+    return true;
+  } catch (error) {
+    return _router.navigate(['/login']);
+  }
+};
